@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 const {
-  models: { User, Note},
+  models: { User, Note },
 } = require("./db");
 const path = require("path");
 
@@ -24,22 +24,19 @@ app.get("/api/auth", async (req, res, next) => {
   }
 });
 
-app.get("/api/user/:userId/notes", async (req, res, next) =>{
+app.get("/api/users/:userId/notes", async (req, res, next) => {
   try {
-    user = await User.findAll({
+    const user = await User.findOne({
       include: Note,
       where: {
-        id: req.params.userId
-      }})
-      res.send(user)
-    } catch(err){
-      next(err)
-    }
-
-
-
-})
-
+        id: req.params.userId,
+      },
+    });
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.delete("/api/auth", async (req, res, next) => {
   try {
