@@ -66,10 +66,13 @@
             }
           });
           this.setState({ auth: response.data });
-          let notesResponse = await axios.get(`/api/users/${this.state.auth.id}/notes`);
+          let notesResponse = await axios.get(`/api/users/notes`, {
+            headers: {
+              authorization: token
+            }
+          });
           // console.log(notesResponse.data.notes)
           this.setState({ notes: notesResponse.data.notes})
-          console.log(this.state.notes)
         }
       }
       componentDidMount(){
