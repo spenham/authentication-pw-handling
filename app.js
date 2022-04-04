@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 const {
-  models: { User },
+  models: { User, Note},
 } = require("./db");
 const path = require("path");
 
@@ -23,6 +23,23 @@ app.get("/api/auth", async (req, res, next) => {
     next(ex);
   }
 });
+
+app.get("/api/user/:userId/notes", async (req, res, next) =>{
+  try {
+    user = await User.findAll({
+      include: Note,
+      where: {
+        id: req.params.userId
+      }})
+      res.send(user)
+    } catch(err){
+      next(err)
+    }
+
+
+
+})
+
 
 app.delete("/api/auth", async (req, res, next) => {
   try {
